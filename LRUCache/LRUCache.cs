@@ -13,7 +13,6 @@ namespace LRUCache
     /// <typeparam name="T">The type of object to be cached. Can be a value or reference type.</typeparam>
     public class LRUCache<T>
     {
-        private DateTime _initDate;
         private TimeSpan _ttl;
         private int _capacity;
         private IDb<T> _dao;
@@ -34,7 +33,6 @@ namespace LRUCache
 
             _ttl = ttl;
             _capacity = capacity;
-            _initDate = DateTime.Now;
             _dao = dao;
             _map = new Dictionary<int, CacheItem<T>>();
             _linkedList = new LinkedList<CacheItem<T>>();
@@ -98,9 +96,9 @@ namespace LRUCache
         /// </summary>
         private void CleanUp()
         {
-            while (_linkedList.First != null && _linkedList.Count > _capacity)
+            while (_linkedList.First != null)
             {
-                TimeSpan timeInExistence = _linkedList.First.Value.CreateDate.Subtract(_initDate);
+                TimeSpan timeInExistence = DateTime.Now.Subtract(_linkedList.First.Value.CreateDate);
                 if (timeInExistence > _ttl || _linkedList.Count > _capacity)
                 {
                     // Removal is an O(1) operation

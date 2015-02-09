@@ -48,7 +48,7 @@ namespace LRUCache
                             ID = 2,
                             Username = "Sim",
                             Password = "123",
-                            FavoriteFood = "unknown"
+                            FavoriteFood = "mystery"
                         };
                     default:
                         return new User
@@ -68,9 +68,9 @@ namespace LRUCache
             var cache = new LRUCache<User>(new MockUserRepo(), new TimeSpan(0, 0, 2), 3);
 
             cache.GetValue(0);
-            cache.GetValue(1);
-            Thread.Sleep(3001); // milliseconds
             cache.GetValue(2);
+            Thread.Sleep(3000); // milliseconds
+            cache.GetValue(1);
 
             Console.WriteLine("\nLRU Cache Contents 1");
             PrintValues(cache);
