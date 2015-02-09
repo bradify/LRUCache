@@ -30,6 +30,8 @@ namespace LRUCache
         {
             if (ttl == null || ttl.TotalMilliseconds < 1)
                 throw new ArgumentException("Item lifetime must be greater than zero milliseconds.");
+            if (capacity < 1)
+                throw new ArgumentException("Capacity must be greater than zero.");
 
             _ttl = ttl;
             _capacity = capacity;
