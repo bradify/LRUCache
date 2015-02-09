@@ -17,7 +17,7 @@ namespace LRUCache
         private TimeSpan _ttl;
         private int _capacity;
         private IDb<T> _dao;
-        private Dictionary<int, CacheItem<T>> _hashTable;
+        private Dictionary<int, CacheItem<T>> _map;
         private LinkedList<CacheItem<T>> _linkedList;
 
         /// <summary>
@@ -36,7 +36,7 @@ namespace LRUCache
             _capacity = capacity;
             _initDate = DateTime.Now;
             _dao = dao;
-            _hashTable = new Dictionary<int, CacheItem<T>>();
+            _map = new Dictionary<int, CacheItem<T>>();
             _linkedList = new LinkedList<CacheItem<T>>();
         }
 
@@ -53,7 +53,7 @@ namespace LRUCache
             CacheItem<T> item;
 
             // Search the hash, O(1) time
-            if (_hashTable.TryGetValue(key, out item))
+            if (_map.TryGetValue(key, out item))
             {
                 // Item is in the cache, so update date and move to tail in O(1) time
                 item.CreateDate = DateTime.Now;
@@ -66,7 +66,7 @@ namespace LRUCache
                 if (obj != null)
                 {
                     item = new CacheItem<T> { Key = key, CachedObject = obj, CreateDate = DateTime.Now };
-                    _hashTable.Add(key, item);
+                    _map.Add(key, item);
                 }
                 else
                 {
@@ -104,7 +104,7 @@ namespace LRUCache
                 if (timeInExistence > _ttl || _linkedList.Count > _capacity)
                 {
                     // Removal is an O(1) operation
-                    _hashTable.Remove(_linkedList.First.Value.Key);
+                    _map.Remove(_linkedList.First.Value.Key);
                     _linkedList.RemoveFirst();
                 }
                 else
