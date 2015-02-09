@@ -84,7 +84,6 @@ namespace LRUCache
             cache.GetValue(0);
             cache.GetValue(0);
             cache.GetValue(3);
-            
 
             Console.WriteLine("\nLRU Cache Contents 2");
             PrintValues(cache);
